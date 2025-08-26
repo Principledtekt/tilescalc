@@ -1,5 +1,5 @@
 const CACHE_NAME = 'v0.1.0';
-const CACHEABLE_RESOURCES = ["/", "index.html", "app.js", "manifest.json", "icon512.png", "./pkg/tiles_wa.js"];
+const CACHEABLE_RESOURCES = ["/", "index.html", "app.js", "manifest.json", "icon512.png", "/pkg/tiles_wa.js", "/pkg/tiles_wa_bg.wasm"];
 
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
@@ -50,5 +50,6 @@ self.addEventListener('fetch', event => {
     }
   })());
 });
+
 
 
