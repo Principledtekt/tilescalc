@@ -1,6 +1,6 @@
 {
     "name": "Плитка",
-    "start_url": "/tiles-v0_1_0/index.html",
+    "start_url": "/tilescalc/index.html",
     "display": "standalone",
     "theme_color": "#008b8b",
     "background_color": "#bff7aa",
@@ -10,4 +10,5 @@
             "sizes": "512x512"
         }
     ]
+
  }
