@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Плитка</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="data:image/svg+xml, %3Csvg
+    width='512'
+    height='512'
+    viewBox='0 0 512 512'
+    version='1.1'
+    xmlns='http://www.w3.org/2000/svg'
+    xmlns:svg='http://www.w3.org/2000/svg'%3E
+     %3Crect
+        style='fill:#008b8b;fill-opacity:1;stroke:none;stroke-linejoin:round'
+        width='300'
+        height='300'
+        x='106'
+        y='106' /%3E
+        %3C/svg%3E">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: darkcyan;
+        }
+
+        footer {
+            height: 5vh;
+            display: flex;
+            position: fixed;
+            bottom: -33px;
+            transition: 0.5s;
+        }
+
+        input {
+            max-width: 100%;
+            text-align: center;
+            font-size: large;
+            font-weight: 500;
+        }
+
+        fieldset {
+            padding: 5px 2px 5px 2px;
+            border-color: darkblue;
+        }
+
+        legend {
+            font-style: italic;
+            font-weight: bold;
+            font-size: larger;
+            display: flex;
+            align-items: center;
+        }
+
+        textarea {
+            margin: 0 2px;
+            font-size: large;
+        }
+
+        legend textarea {
+            background-color: inherit;
+        }
+
+        canvas {
+            background-color: inherit;
+            overflow: auto;
+            max-width: 500px;
+        }
+
+        .is-s {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: 1fr;
+            justify-items: center;
+        }
+
+        #i-w-s-l {
+            grid-column: 1/2;
+            grid-row: 1/2;
+        }
+
+        #i-h-s-l {
+            grid-column: 2/3;
+            grid-row: 1/2;
+            text-align: end;
+        }
+
+        .i-sf {
+            max-width: 45vw;
+        }
+
+        #in-m-surface {
+            grid-column: span 2;
+            grid-row: 2/3;
+        }
+
+        #ins-tile {
+            display: grid;
+        }
+
+        #ins-wh-tile {
+            display: inherit;
+            grid-template-columns: 1fr 2em 1fr;
+            justify-items: center;
+            border-bottom: 1px solid blue;
+        }
+
+        #in-width-tile-l {
+            grid-column: 1/2;
+            grid-row: 1/2;
+        }
+
+        #swap-w-h-tile {
+            grid-column: 2/3;
+            grid-row: 1/2;
+            width: 2em;
+            align-self: end;
+            padding: 0;
+        }
+
+        #in-height-tile-l {
+            grid-column: 3/4;
+            grid-row: 1/2;
+            text-align: end;
+        }
+
+        #in-width-tile-l,
+        #in-height-tile-l {
+            max-width: 41vw;
+        }
+
+        #s-vhs {
+            display: inherit;
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        #vhs {
+            grid-column: 2/3;
+            grid-row: 1/2;
+            align-self: center;
+            justify-self: center;
+        }
+
+        #in-m-tile {
+            grid-column: span 3;
+            grid-row: 2/3;
+            justify-self: center;
+        }
+
+        #in-tr-tile {
+            display: inherit;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: 1fr auto;
+            justify-items: center;
+            border-bottom: 1px solid blue;
+        }
+
+        #in-m-thickness,
+        #in-m-reserve {
+            grid-row: 2/3;
+        }
+
+        .i-t-t-l {
+            max-width: 45vw;
+        }
+
+        #i-r-t-l {
+            text-align: end;
+        }
+
+        #in-gap-tile {
+            display: inherit;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: 1fr auto auto;
+            justify-items: center;
+        }
+
+        #in-m-gap-tile {
+            grid-column: span 2;
+            grid-row: 2/3;
+        }
+
+        #in-gap-tile-l {
+            text-align: end;
+        }
+
+        #txt-gap {
+            grid-column: span 2;
+            grid-row: 3/4;
+            margin: 0;
+        }
+
+        .i-g-t-l {
+            max-width: 45vw;
+        }
+
+        #ins-other-tile {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: repeat(6, auto);
+        }
+
+        #in-ch-adh-l {
+            grid-row: 1/2;
+        }
+
+        fieldset#ins-other-tile label {
+            display: flex;
+            align-items: flex-end;
+        }
+
+        #ins-other-tile textarea {
+            width: 100%;
+        }
+
+        .btn_footer {
+            width: auto;
+            height: inherit;
+            overflow: hidden;
+            padding: 1px;
+        }
+
+        .s {
+            padding: 5px 2px;
+        }
+
+        .bn-sg {
+            height: 100%;
+            width: auto;
+        }
+
+        #menu {
+            margin-left: auto;
+            position: fixed;
+            height: 5vh;
+            z-index: 2;
+            right: 8px;
+            bottom: 8px;
+            opacity: 0.5;
+        }
+
+        .card {
+            width: auto;
+            max-width: 500px;
+            height: fit-content;
+            position: relative;
+            margin: auto;
+        }
+
+        .in,
+        .out {
+            position: absolute;
+            width: 100%;
+            left: 0;
+            top: 0;
+            justify-content: center;
+            align-items: center;
+            transition: 1s;
+            backface-visibility: hidden;
+            border-radius: 5px;
+        }
+
+        .in {
+            background-color: rgb(192 204 154);
+        }
+
+        .out {
+            background-color: rgb(255 220 190);
+            transform: rotateY(180deg);
+        }
+
+        #input-btn,
+        #output-btn {
+            width: 90%;
+            height: 3em;
+        }
+
+        .btn {
+            width: auto;
+            height: 2em;
+        }
+
+        .m {
+            text-decoration: underline dotted;
+            text-underline-position: under;
+
+        }
+
+        legend output {
+            font-weight: normal;
+            font-size: initial;
+            margin-left: 2px;
+            max-width: 50vw;
+        }
+
+        output {
+            font-size: larger;
+            font-family: math;
+        }
+
+        .keep {
+            background-color: #bff7aa;
+        }
+
+
+        .cut-line {
+            color: red;
+            font-weight: bold;
+        }
+
+        .cut {
+            background-color: #d8d8d8;
+        }
+
+        .hr {
+            border-top: solid 1px black;
+            padding-top: 2px;
+
+        }
+
+        .b {
+            background-color: inherit;
+            width: 5rem;
+            border: none;
+        }
+
+        .bb {
+            border-bottom: 1px solid blue;
+        }
+
+        #tmd {
+            display: inline-block;
+            border: #818080 dotted;
+            padding: 3px;
+        }
+
+        #title {
+            width: inherit;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="card">
+        <div class="in">
+             <span style="position: inherit; right: 2px; font-family: monospace;">v0.1.0_wa</span>
+            <fieldset class="is-s">
+                <legend>Плоскость №<span id="sf-n1">1</span>
+
+                    <textarea name="" id="sf-t1"> </textarea>
+
+                </legend>
+                <label class="i-sf" id="i-w-s-l">
+                    ширина:
+                    <br><input type="number" name="" id="i-w-s1" value="">
+                </label>
+                <label class="i-sf" id="i-h-s-l">
+                    высота:
+                    <br><input type="number" name="" id="i-h-s1" value="">
+                </label>
+                <span class="m" id="in-m-surface">метр, м</span>
+
+            </fieldset>
+            <button id="p-s" style="font-size: larger;"><span id="s-c">1</span> + </button>
+            <fieldset id="ins-tile">
+                <legend>Плитка <textarea name="" id="tile1" rows=""> </textarea></legend>
+                <div class="s" id="s-vhs">
+                    <select name="" id="tile-sizes">
+                        <option value="">Размеры</option>
+                        <option value="10 10">10x10</option>
+                        <option value="20 30">20x30</option>
+                        <option value="25 6">25x6</option>
+                        <option value="30 40">30x40</option>
+                    </select>
+                    <output id="vhs">расположение</output>
+                </div>
+                <div class="s" id="ins-wh-tile">
+
+                    <label id="in-width-tile-l">
+                        ширина:
+                        <br><input type="number" name="" id="in-width-tile" value="">
+                    </label>
+                    <button id="swap-w-h-tile" class="btn">
+                        <svg class="bn-sg" width="150px" height="150px" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <g id="a-l-r">
+                                <path id="vector" d="M16 13L19 16M19 16L16 19M19 16H5M8 11L5 8M5 8L8 5M5 8H19"
+                                    stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </g>
+                        </svg>
+                    </button>
+                    <label id="in-height-tile-l">
+                        высота:
+                        <br><input type="number" name="" id="in-height-tile" value="">
+                    </label>
+                    <span class="m" id="in-m-tile">сантиметр, см</span>
+
+                </div>
+                <div class="s" id="in-tr-tile">
+                    <label class="i-t-t-l">
+                        толщина:
+                        <br><input type="number" name="" id="in-thick-tile">
+                    </label>
+                    <span class="m" id="in-m-thickness">миллиметр, мм</span>
+                    <label class="i-t-t-l" id="i-r-t-l">
+                        запас:
+                        <br><input type="number" name="" id="i-r-t" value="5">
+                    </label>
+                    <span class="m" id="in-m-reserve">процент, %</span>
+                </div>
+                <div class="s" id="in-gap-tile">
+                    <label class="i-g-t-l">
+                        ширина шва:
+                        <br><input type="number" name="" id="in-width-gap-tile" value="">
+
+                    </label>
+                    <label class="i-g-t-l" id="in-gap-tile-l">
+                        глубина шва:
+                        <br><input type="number" name="" id="in-depth-gap-tile" value="5">
+                    </label>
+                    <span class="m" id="in-m-gap-tile">миллиметр, мм</span>
+                    <p id="txt-gap">Глубина шва равняется толщине плитки, необходимо указать один из этих параметров для
+                        расчёта количества затирки</p>
+                </div>
+            </fieldset>
+            <fieldset id="ins-other-tile">
+                <legend>Материалы, инструменты</legend>
+                <label id="in-ch-adh-l"><input type="checkbox" name="" id="ch-adhesive" checked> Клей <textarea name=""
+                        id="ch-adhesive-tarea" rows="1"> </textarea></label>
+                <label>Расход при слое 1 мм <input type="number" class="b" id="adh-consump" value="1.3">
+                    кг/м&sup2</label>
+                <label>Толщина слоя<input type="number" class="b" id="adh-thick-1" value="3">мм <input type="number"
+                        class="b" id="adh-thick-2" value="8">мм</label>
+                <label class="bb">Вес одного мешка<input type="number" name="" id="adh-bag" class="b"
+                        value="25">килограмм</label>
+                <label><input type="checkbox" name="" id="ch-grout" checked> Затирка <textarea name=""
+                        id="ch-grout-tarea" rows="1"> </textarea></label>
+                <label class="bb">Коэф. плотности <input type="number" id="i-grout-gd" class="b"
+                        value="1.13">кг/дм&sup3;,
+                    килограмм на кубический дециметр (литр)</label>
+                <label><input type="checkbox" name="" id="ch-cross" checked> Крестики <textarea name=""
+                        id="ch-cross-tarea" rows="1"> </textarea></label>
+                <label class="bb"><input type="checkbox" name="" id="ch-level"> СВП <textarea name=""
+                        id="ch-level-tarea" rows="1"> </textarea></label>
+                <label><input type="checkbox" name="" id="ch-primer"> Грунтовка <textarea name="" id="ch-primer-tarea"
+                        rows="1"> </textarea></label>
+                <label class="bb">Расход: <input type="number" id="i-prim-c" class="b" value="0.2">л/м&sup2;</label>
+                <label><input type="checkbox" name="" id="ch-other"> <textarea name="" id="ch-other-tarea"
+                        rows="1"> </textarea></label>
+
+            </fieldset>
+            <button
+                onclick="document.querySelector('.in').style.transform= 'rotateY(180deg)';document.querySelector('.out').style.transform= 'rotateY(360deg)'; window.scrollTo(0, 0);"
+                style="height: 3em;width: 3em;">↪</button>
+            <button id="input-btn"
+                onclick="document.querySelector('.in').style.transform= 'rotateY(180deg)';document.querySelector('.out').style.transform= 'rotateY(360deg)'; window.scrollTo(0, 0);">Теперь
+                можно нажать сюда</button>
+        </div>
+
+
+
+        <div class="out">
+            <div class="sum">
+                <fieldset>
+                    <label>Площадь: <output id="s-surf-area"></output> м&sup2;</label>
+                    <br><label>Плитка: <br><output id="s-qty-t-min"></output> шт.</label>
+                    <label> = <output id="s-area-t-min"></output> м&sup2; + <output class="proc"></output> % ≈ <output
+                            id="s-qty-t-min-r"></output> шт. = <output id="s-area-t-min-r"> м&sup2;</output></label>
+                    <br><label><output id="s-qty-t-max"></output> шт.</label>
+                    <label> = <output id="s-area-t-max"></output> м&sup2; + <output class="proc"></output> % ≈ <output
+                            id="s-qty-t-max-r"></output> шт. = <output id="s-area-t-max-r"> м&sup2;</output></label>
+
+                    <br><label>Клей: <br>слой <output id="s-adh-thick-1"></output> мм = <output id="s-adh-1"></output>
+                        кг ≈ <output id="s-adh-bag-1"></output> меш.</label>
+                    <br><label>слой <output id="s-adh-thick-2"></output> мм = <output id="s-adh-2"></output> кг ≈
+                        <output id="s-adh-bag-2"></output> меш.</label>
+                    <br><label>Затирка: <output id="s-grout"></output> кг</label>
+                    <br><label>Крестики: <output id="s-cross"></output> шт</label>
+                    <br><label id="levd" hidden>СВП: <output id="s-lev"></output> шт</label>
+                    <br><label id="primd" hidden>Грунтовка: <output id="s-prim"></output> л</label>
+                    <br><output id="tmd" contenteditable="true"></output>
+                    <button id="copy">Копировать</button>
+                </fieldset>
+
+            </div>
+            <fieldset id="outs-surface1">
+                <legend>Плоскость №1<output id="out-surface1"></output></legend>
+                <label>Площадь: <output id="out-area-surf1"></output> м<sup>2</sup></label>
+                <br><label>Ширина: <output id="out-width-surf1"></output> м</label>
+                <label>Высота: <output id="out-height-surf1"></output> м</label>
+
+            </fieldset>
+
+            <fieldset class="outs-tile1">
+                <legend>Плитка <output id="out-tile1"></output></legend>
+                <label>Размер: <output id="out-width1"></output>×<output id="out-height1"></output> см = <output
+                        id="out-area-tile1"></output> м<sup>2</sup></label>
+                <br><label>Количество: <output id="out-qty-tileM1"></output> ― <output id="out-qty-tile1"></output>
+                    шт. = <output id="out-area-all-tileM1"></output> ― <output id="out-area-all-tile1"></output>
+                    м<sup>2</sup></label>
+                <br><label class="hr">Горизонтальный ряд: <output id="out-row-qty-tileR1"></output><output
+                        id="out-row-qty-tile1"></output> шт.</label>
+                <br><label>Остаётся <mark class="keep"><output id="o-raw-keep1"></output></mark> <span class="cut-line">
+                        | </span> <mark class="cut"><output id="o-raw-cut1"></output></mark> отрезается
+                    см</label>
+                <br><label class="hr">Вертикальный ряд: <output id="out-col-qty-tileR1"></output><output
+                        id="out-col-qty-tile1"></output> шт.</label>
+                <br><label>Остаётся <mark class="keep"><output id="o-col-keep1"></output></mark> <span class="cut-line">
+                        | </span> <mark class="cut"><output id="o-col-cut1"></output></mark> отрезается см</label>
+            </fieldset>
+            <button id="draw-btn-surface1" onclick="let c=document.getElementById('surface1');
+                c.hidden==true?c.hidden=false:c.hidden=true;">Рисунок</button>
+            <canvas id="surface1" width="700" height="700"></canvas>
+            <fieldset class="outs-other">
+                <legend>Материалы, инструменты</legend>
+                <label id="o-adhesive-l"><output id="out-adhesive1"></output></label>
+                <label id="o-grout-l"><output id="out-grout1"></output></label>
+                <label id="o-cross-l"><output id="out-cross1"></output></label>
+                <label id="o-level-l"><output id="out-level1"></output></label>
+                <label id="o-primer-l"><output id="out-primer1"></output></label>
+                <label id="o-other-l"><output id="out-other1"></output></label>
+
+            </fieldset>
+
+            <button id="output-btn"
+                onclick="document.querySelector('.in').removeAttribute('style');document.querySelector('.out').removeAttribute('style');">
+                Назад к вводу</button>
+        </div>
+    </div>
+    <footer>
+        <button id="d_l" class="btn_footer">
+            <svg class="bn-sg" width="50px" height="50px" viewBox="0 0 24 24" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M12 3V4M12 20V21M4 12H3M6.31412 6.31412L5.5 5.5M17.6859 6.31412L18.5 5.5M6.31412 17.69L5.5 18.5001M17.6859 17.69L18.5 18.5001M21 12H20M16 12C16 14.2091 14.2091 16 12 16C9.79086 16 8 14.2091 8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12Z"
+                    stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <svg class="bn-sg" xmlns="http://www.w3.org/2000/svg" width="50px" height="50px" viewBox="0 0 24 24"
+                fill="none" style="display: none;">
+                <path
+                    d="M3.32031 11.6835C3.32031 16.6541 7.34975 20.6835 12.3203 20.6835C16.1075 20.6835 19.3483 18.3443 20.6768 15.032C19.6402 15.4486 18.5059 15.6834 17.3203 15.6834C12.3497 15.6834 8.32031 11.654 8.32031 6.68342C8.32031 5.50338 8.55165 4.36259 8.96453 3.32996C5.65605 4.66028 3.32031 7.89912 3.32031 11.6835Z"
+                    stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </button>
+        <button id="lang_btn" class="btn_footer">
+            <svg class="bn-sg" width="800px" height="800px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#000000"
+                    d="M320,24H16V328H192V496H496V192H320ZM148.305,96,98.093,239.3H132l8.166-23.3H192v80H48V56H288V192H221.332L187.7,96Zm36.317,88H151.378L168,136.562ZM464,224V464H224V224Z" />
+                <path fill="#000000"
+                    d="M317.432,368.48A136.761,136.761,0,0,0,327.521,382.6q-17.4,9.384-39.521,9.4v32c24.141,0,45.71-6.408,64-18.824C370.29,417.592,391.859,424,416,424V392q-22.075,0-39.52-9.407a136.574,136.574,0,0,0,10.088-14.113A166.212,166.212,0,0,0,406.662,320H424V288H368V264H336v24H280v32h17.338A166.212,166.212,0,0,0,317.432,368.48ZM373.53,320a133.013,133.013,0,0,1-14.1,31.52A104.39,104.39,0,0,1,352,361.968a103.546,103.546,0,0,1-6.93-9.651A132.384,132.384,0,0,1,330.466,320Z" />
+            </svg>
+        </button>
+        <button id="meas_btn" class="btn_footer">
+            <svg class="bn-sg" fill="#000000" height="50px" width="50px" version="1.1"
+                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 491.541 491.541" xml:space="preserve">
+                <g>
+                    <path d="M350.373,116.048H24.445C10.942,116.048,0,126.988,0,140.492V466.42c0,13.503,10.942,24.445,24.445,24.445h325.928
+                   c13.503,0,24.444-10.942,24.444-24.445V140.492C374.817,126.988,363.876,116.048,350.373,116.048z M325.928,441.975H48.889V164.936
+                   h277.039V441.975z" />
+                    <path d="M486.695,411.913h-26.513V126.63h26.513c1.958,0,3.724-1.178,4.472-2.991c0.756-1.814,0.342-3.892-1.05-5.283
+                   l-42.802-42.802c-1.894-1.894-4.965-1.894-6.858,0l-42.803,42.802c-1.392,1.392-1.806,3.469-1.05,5.283
+                   c0.749,1.813,2.515,2.991,4.473,2.991h26.513v285.283h-26.513c-1.958,0-3.724,1.177-4.473,2.991
+                   c-0.755,1.815-0.342,3.893,1.05,5.285l42.803,42.802c1.893,1.894,4.965,1.894,6.858,0l42.802-42.802
+                   c1.393-1.392,1.807-3.469,1.05-5.285C490.419,413.09,488.654,411.913,486.695,411.913z" />
+                    <path
+                        d="M70.676,94.563c1.392,1.392,3.469,1.806,5.284,1.05c1.814-0.747,2.992-2.514,2.992-4.472V64.628h285.283v26.513
+                   c0,1.958,1.177,3.725,2.991,4.472c1.814,0.756,3.891,0.342,5.284-1.05l42.802-42.802c1.894-1.895,1.894-4.967,0-6.86L372.51,2.1
+                   c-1.393-1.393-3.469-1.807-5.284-1.051c-1.814,0.748-2.991,2.514-2.991,4.472v26.515H78.952V5.521c0-1.957-1.177-3.724-2.992-4.472
+                   c-1.814-0.756-3.892-0.342-5.284,1.051L27.875,44.901c-1.894,1.893-1.894,4.965,0,6.86L70.676,94.563z" />
+                </g>
+            </svg>
+        </button>
+
+    </footer>
+    <button id="menu" class="btn_footer">
+        <svg class="bn-sg" fill="#000000" width="150px" height="150px" viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M2,4A1,1,0,0,1,3,3H21a1,1,0,0,1,0,2H3A1,1,0,0,1,2,4Zm1,9H21a1,1,0,0,0,0-2H3a1,1,0,0,0,0,2Zm0,8H21a1,1,0,0,0,0-2H3a1,1,0,0,0,0,2Z" />
+        </svg>
+    </button>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js', { scope: '/tilescalc/' })
+                .then((registration) => {
+                    navigator.serviceWorker.addEventListener('controllerchange', () => {
+                    console.log('Service Worker has been activated and is now controlling the page.');
+                    window.location.reload();
+                });
+                })
+                .catch((error) => {
+                    console.log("Error during registration service worker:", error);
+                });
+                
+        } else {
+            console.log("Service worker cannot be installed.");
+        }
+
+    </script>
+    <script src="../pkg/tiles_wa.js"></script>
+    <script src="./app.js"></script>
+</body>
+
+</html>
